@@ -39,7 +39,7 @@ Ingresa a: **https://localhost:18163/EmpadronamientoPublico**
 ### 2️⃣ **Verifica que el sistema esté disponible**
 Debes ver una página que dice **"Empadronamiento Estudiantil"**
 
-![Página de inicio del sistema](../.playwright-mcp/01_pagina_inicio.png)
+![Página de inicio del sistema](./.playwright-mcp/01_pagina_inicio.png)
 
 ### 3️⃣ **Lee la información**
 En la página inicial encontrarás:
