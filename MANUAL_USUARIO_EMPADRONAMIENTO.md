@@ -47,7 +47,7 @@ En la página inicial encontrarás:
 - Tiempo estimado
 - Botón verde **"Iniciar Empadronamiento"**
 
-![Página de introducción al empadronamiento](../.playwright-mcp/08_pagina_introduccion_empadronamiento_new.png)
+![Página de introducción al empadronamiento](./.playwright-mcp/08_pagina_introduccion_empadronamiento_new.png)
 
 ### 4️⃣ **Haz clic en "Iniciar Empadronamiento"**
 ¡Y comienza tu registro!
@@ -66,7 +66,7 @@ El empadronamiento tiene **5 pasos** que debes completar en orden:
 
 ## 📋 **PASO 1: Tus Datos Básicos**
 
-![Paso 1: Formulario de datos básicos](../.playwright-mcp/09_paso_1_datos_basicos_nuevo.png)
+![Paso 1: Formulario de datos básicos](./.playwright-mcp/09_paso_1_datos_basicos_nuevo.png)
 
 ### ✅ **Qué debes completar (OBLIGATORIO):**
 1. **Número de cédula** - Escríbelo exactamente como aparece en tu documento
@@ -82,19 +82,19 @@ El empadronamiento tiene **5 pasos** que debes completar en orden:
 ### 🔍 **¡Dato importante!**
 Si tienes **cédula costarricense**, el sistema puede llenar automáticamente tu nombre y apellidos cuando escribas tu número de cédula.
 
-![Autocompletado de datos con cédula](../.playwright-mcp/10_paso_1_datos_autocompletados_nuevo.png)
+![Autocompletado de datos con cédula](./.playwright-mcp/10_paso_1_datos_autocompletados_nuevo.png)
 
 ### ➡️ **Para continuar:**
 - Verifica que todos los datos obligatorios estén completos
 - Haz clic en **"Siguiente"** o **"Continuar al Paso 2"**
 
-![Paso 1 completado](../.playwright-mcp/11_paso_1_formulario_completado_nuevo.png)
+![Paso 1 completado](./.playwright-mcp/11_paso_1_formulario_completado_nuevo.png)
 
 ---
 
 ## 📧 **PASO 2: Tu Información de Contacto**
 
-![Paso 2: Información de contacto y residencia](../.playwright-mcp/12_paso_2_contacto_residencia_nuevo.png)
+![Paso 2: Información de contacto y residencia](./.playwright-mcp/12_paso_2_contacto_residencia_nuevo.png)
 
 ### ✅ **Qué debes completar (OBLIGATORIO):**
 1. **Correo electrónico principal** - Usa uno que revises frecuentemente
@@ -117,13 +117,13 @@ Si tienes **cédula costarricense**, el sistema puede llenar automáticamente tu
 - Revisa que tu correo esté escrito correctamente
 - Haz clic en **"Siguiente"**
 
-![Paso 2 completado](../.playwright-mcp/13_paso_2_formulario_completado_nuevo.png)
+![Paso 2 completado](./.playwright-mcp/13_paso_2_formulario_completado_nuevo.png)
 
 ---
 
 ## 👨‍👩‍👧‍👦 **PASO 3: Información de tus Responsables**
 
-![Paso 3: Información de responsables y contacto de emergencia](../.playwright-mcp/14_paso_3_responsables_emergencia_nuevo.png)
+![Paso 3: Información de responsables y contacto de emergencia](./.playwright-mcp/14_paso_3_responsables_emergencia_nuevo.png)
 
 ### 📝 **Todo es OPCIONAL en este paso:**
 Puedes llenar lo que sepas o tengas disponible:
@@ -152,13 +152,13 @@ Aunque no es obligatorio, es **muy importante** que llenes al menos un contacto 
 - Llena lo que puedas
 - Haz clic en **"Siguiente"**
 
-![Paso 3 completado](../.playwright-mcp/15_paso_3_formulario_completado_nuevo.png)
+![Paso 3 completado](./.playwright-mcp/15_paso_3_formulario_completado_nuevo.png)
 
 ---
 
 ## 🎓 **PASO 4: Tu Información Académica**
 
-![Paso 4: Información académica](../.playwright-mcp/16_paso_4_informacion_academica_nuevo.png)
+![Paso 4: Información académica](./.playwright-mcp/16_paso_4_informacion_academica_nuevo.png)
 
 ### ✅ **Qué debes completar (OBLIGATORIO):**
 1. **Nivel académico actual** - Selecciona dónde estás estudiando:
@@ -182,13 +182,13 @@ Aunque no es obligatorio, es **muy importante** que llenes al menos un contacto 
 - Escribe el año que quieres cursar
 - Haz clic en **"Siguiente"**
 
-![Paso 4 completado](../.playwright-mcp/17_paso_4_formulario_completado_nuevo.png)
+![Paso 4 completado](./.playwright-mcp/17_paso_4_formulario_completado_nuevo.png)
 
 ---
 
 ## 🏥 **PASO 5: Información de Salud**
 
-![Paso 5: Información de salud](../.playwright-mcp/18_paso_5_informacion_salud_nuevo.png)
+![Paso 5: Información de salud](./.playwright-mcp/18_paso_5_informacion_salud_nuevo.png)
 
 ### 📝 **TODO ES OPCIONAL** - Solo llena lo que consideres importante:
 
@@ -211,7 +211,7 @@ Si tienes una emergencia en la institución, esta información puede **salvar tu
 - **Marca la casilla de términos y condiciones**
 - Haz clic en **"Finalizar"** o **"Completar Empadronamiento"**
 
-![Paso 5 con términos aceptados](../.playwright-mcp/19_paso_5_terminos_aceptados_nuevo.png)
+![Paso 5 con términos aceptados](./.playwright-mcp/19_paso_5_terminos_aceptados_nuevo.png)
 
 ---
 
@@ -219,7 +219,7 @@ Si tienes una emergencia en la institución, esta información puede **salvar tu
 
 ### 🎉 **¡Felicidades! Has completado tu empadronamiento**
 
-![Confirmación de empadronamiento exitoso](../.playwright-mcp/20_confirmacion_empadronamiento_exitoso_nuevo.png)
+![Confirmación de empadronamiento exitoso](./.playwright-mcp/20_confirmacion_empadronamiento_exitoso_nuevo.png)
 
 En esta página verás:
 
