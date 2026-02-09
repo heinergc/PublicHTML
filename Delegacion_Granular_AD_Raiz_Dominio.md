@@ -9,7 +9,7 @@
 ## Alcance solicitado
 
 - **Se aplica a un solo contenedor:** la **raíz del AD (dominio)**, por ejemplo:  
-  - `DC=uned,DC=ac,DC=cr`  
+  - `DC=UUU,DC=xy,DC=xy`  
   - `DC=empresa,DC=local`
 - **Objetos afectados:** **solo** descendientes de clase **`user`** (no computadoras, grupos, contactos, etc.)
 - **Atributos delegados (LDAP):**
