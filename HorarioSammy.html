@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Horario • Minha Escola</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f1a;
+    --surface: #151729;
+    --surface2: #1e2238;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8eaf6;
+    --text-muted: #6b7280;
+    --accent: #6c63ff;
+    --accent2: #f472b6;
+
+    /* Subject colors */
+    --ing-lit:    #10b981;
+    --ing-or:     #34d399;
+    --ing-esc:    #06b6d4;
+    --educ-mus:   #f97316;
+    --educ-fis:   #eab308;
+    --educ-civ:   #f59e0b;
+    --mad-vac:    #0ea5e9;
+    --artes:      #8b5cf6;
+    --cien:       #22c55e;
+    --esp:        #3b82f6;
+    --mate:       #a855f7;
+    --frances:    #ec4899;
+    --est-soc:    #1d4ed8;
+    --ie:         #0891b2;
+    --comp:       #84cc16;
+    --gestion:    #ca8a04;
+    --ed-pa-co:   #14b8a6;
+    --ed-uc-rel:  #fb923c;
+    --format:     #94a3b8;
+    --g-class:    #64748b;
+    --recreo-bg:  #1a1f35;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    overflow-x: auto;
+  }
+
+  /* Background grid texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(108,99,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(108,99,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 1.5rem 3rem;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .school-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .school-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(108,99,255,0.4);
+  }
+
+  .school-name {
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #fff 40%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .school-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .badge.active {
+    background: rgba(108,99,255,0.15);
+    border-color: rgba(108,99,255,0.4);
+    color: #a5b4fc;
+  }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 0.25rem;
+  }
+
+  .filter-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108,99,255,0.35);
+  }
+
+  /* SCHEDULE TABLE */
+  .schedule-wrapper {
+    background: var(--surface);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    overflow: auto;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(108,99,255,0.1);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+  }
+
+  /* Header row */
+  thead tr:first-child th {
+    background: var(--surface2);
+    padding: 0.9rem 0.5rem;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  thead tr:first-child th.period-num {
+    color: var(--text);
+    font-size: 0.9rem;
+  }
+
+  thead tr:first-child th.break-col {
+    background: var(--recreo-bg);
+    color: rgba(255,255,255,0.2);
+    font-size: 0.55rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    padding: 0.5rem 0.25rem;
+    width: 32px;
+  }
+
+  /* Day column */
+  .day-cell {
+    background: var(--surface2);
+    text-align: center;
+    padding: 0.5rem;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    border-right: 1px solid var(--border);
+    width: 50px;
+    color: var(--text);
+    position: relative;
+  }
+
+  .day-cell::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 20%; bottom: 20%;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2));
+  }
+
+  /* Regular period cells */
+  td {
+    border: 1px solid rgba(255,255,255,0.04);
+    padding: 0;
+    vertical-align: middle;
+    min-width: 90px;
+  }
+
+  .break-td {
+    background: var(--recreo-bg) !important;
+    width: 32px !important;
+    min-width: 32px !important;
+    text-align: center;
+    position: relative;
+  }
+
+  .break-td span {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-size: 0.5rem;
+    font-family: 'Space Mono', monospace;
+    color: rgba(255,255,255,0.18);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Subject card inside cell */
+  .subject-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0.4rem;
+    height: 100%;
+    min-height: 72px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    overflow: hidden;
+  }
+
+  .subject-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.2s;
+  }
+
+  .subject-card:hover::before {
+    background: rgba(255,255,255,0.08);
+  }
+
+  .subject-card:hover {
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    border-radius: 4px;
+  }
+
+  .subject-card.highlight {
+    outline: 2px solid white;
+    outline-offset: -2px;
+    z-index: 5;
+  }
+
+  .subj-name {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    color: rgba(255,255,255,0.95);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    letter-spacing: 0.01em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .subj-teacher {
+    font-size: 0.58rem;
+    font-family: 'Space Mono', monospace;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    margin-top: 3px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .subj-group {
+    font-size: 0.55rem;
+    background: rgba(0,0,0,0.25);
+    border-radius: 4px;
+    padding: 1px 5px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 3px;
+    font-family: 'Space Mono', monospace;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* TOOLTIP */
+  .tooltip {
+    position: fixed;
+    background: #1e2238;
+    border: 1px solid rgba(108,99,255,0.4);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    pointer-events: none;
+    z-index: 1000;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    max-width: 220px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    transform: translateY(-4px);
+  }
+
+  .tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .tooltip-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .tooltip-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-top: 3px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .tooltip-row span:first-child {
+    opacity: 0.5;
+    width: 55px;
+    flex-shrink: 0;
+  }
+
+  .tooltip-row span:last-child {
+    color: var(--text);
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+  }
+
+  .legend-title {
+    width: 100%;
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .legend-item:hover {
+    background: var(--surface2);
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  .schedule-wrapper { animation: fadeInUp 0.6s 0.1s ease forwards; opacity: 0; }
+  header           { animation: fadeInUp 0.5s 0s ease forwards; opacity: 0; }
+  .filters         { animation: fadeInUp 0.5s 0.05s ease forwards; opacity: 0; }
+  .legend          { animation: fadeInUp 0.5s 0.2s ease forwards; opacity: 0; }
+
+  /* Highlighted row/col */
+  tr.row-highlight .subject-card { filter: brightness(1.1); }
+  tr.row-dim .subject-card { filter: brightness(0.4); }
+  td.col-dim .subject-card { filter: brightness(0.4); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <div class="school-brand">
+      <div class="school-icon">🏫</div>
+      <div>
+        <div class="school-name">Minha Escola</div>
+        <div class="school-sub">Horario · 3 Secciones · 2026</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="badge active">📅 Semana regular</div>
+      <div class="badge">Períodos: 12</div>
+      <div class="badge">Generado: 12/3/2026</div>
+    </div>
+  </header>
+
+  <div class="filters">
+    <span class="filter-label">Ver:</span>
+    <button class="filter-btn active" onclick="filterDay('all')">Todos</button>
+    <button class="filter-btn" onclick="filterDay('Lu')">Lunes</button>
+    <button class="filter-btn" onclick="filterDay('Ma')">Martes</button>
+    <button class="filter-btn" onclick="filterDay('Mi')">Miércoles</button>
+    <button class="filter-btn" onclick="filterDay('Ju')">Jueves</button>
+    <button class="filter-btn" onclick="filterDay('Vi')">Viernes</button>
+    <span class="filter-label" style="margin-left:1rem">Grupo:</span>
+    <button class="filter-btn" onclick="filterGroup('all')">Todos</button>
+    <button class="filter-btn" onclick="filterGroup('G1')">Grupo 1</button>
+    <button class="filter-btn" onclick="filterGroup('G2')">Grupo 2</button>
+  </div>
+
+  <div class="schedule-wrapper" id="scheduleWrapper">
+    <table id="schedule">
+      <thead>
+        <tr id="headerRow"></tr>
+      </thead>
+      <tbody id="scheduleBody"></tbody>
+    </table>
+  </div>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="footer">Eliz Horarios &nbsp;·&nbsp; Click en una materia para resaltar &nbsp;·&nbsp; Hover para detalles</div>
+
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ─── DATA ────────────────────────────────────────────────────────────────────
+
+const BREAKS = [
+  { after: 2,  label: 'Recreo',    time: '9:00–9:20'   },
+  { after: 4,  label: 'Recreo',    time: '10:40–11:00' },
+  { after: 6,  label: 'Almuerzo',  time: '12:20–1:00'  },
+  { after: 8,  label: 'Recreo',    time: '2:20–2:40'   },
+  { after: 10, label: 'Recreo',    time: '4:00–4:20'   },
+];
+
+const PERIODS = [
+  { p: 1,  time: '7:40–8:20'  },
+  { p: 2,  time: '8:20–9:00'  },
+  { p: 3,  time: '9:20–10:00' },
+  { p: 4,  time: '10:00–10:40'},
+  { p: 5,  time: '11:00–11:40'},
+  { p: 6,  time: '11:40–12:20'},
+  { p: 7,  time: '1:00–1:40'  },
+  { p: 8,  time: '1:40–2:20'  },
+  { p: 9,  time: '2:40–3:20'  },
+  { p: 10, time: '3:20–4:00'  },
+  { p: 11, time: '4:20–5:00'  },
+  { p: 12, time: '5:00–5:40'  },
+];
+
+// Subject definitions: name, color (CSS var name), teacher(s)
+const SUBJECTS = {
+  'ING LIT':   { color: '#10b981', teachers: ['Grey']                  },
+  'ING OR':    { color: '#34d399', teachers: ['Victor']                 },
+  'ING ESC':   { color: '#06b6d4', teachers: ['Senior']                 },
+  'EDUC MUS':  { color: '#f97316', teachers: ['Kevin']                  },
+  'EDUC FIS':  { color: '#eab308', teachers: ['Enoc','Carlos','San']    },
+  'EDUC CIV':  { color: '#f59e0b', teachers: ['Aya']                    },
+  'MAD Y VAC': { color: '#0ea5e9', teachers: ['Aida','Prescila']        },
+  'ARTES P':   { color: '#8b5cf6', teachers: ['Karen']                  },
+  'CIEN':      { color: '#22c55e', teachers: ['Daniela']                },
+  'ESP':       { color: '#3b82f6', teachers: []                         },
+  'MATE':      { color: '#a855f7', teachers: ['Diego']                  },
+  'FRANCÉS':   { color: '#ec4899', teachers: ['Erick']                  },
+  'EST SOC':   { color: '#1d4ed8', teachers: []                         },
+  'IE':        { color: '#0891b2', teachers: ['Fabian']                 },
+  'COMP':      { color: '#84cc16', teachers: ['Alfonso']                },
+  'GESTIÓN':   { color: '#ca8a04', teachers: ['Natalia']                },
+  'ED PA CO':  { color: '#14b8a6', teachers: ['Daniela']                },
+  'ED UC REL': { color: '#fb923c', teachers: []                         },
+  'FOR MA T':  { color: '#94a3b8', teachers: ['Karla']                  },
+  'G':         { color: '#64748b', teachers: ['Fabian']                 },
+};
+
+// null = empty, otherwise { subj, teacher, group }
+// group: 'all' | 'G1' | 'G2'
+const SCHEDULE = {
+  Lu: [
+    { subj:'ING LIT',  teacher:'Grey',               group:'all' },
+    { subj:'ING LIT',  teacher:'Grey',               group:'all' },
+    { subj:'EDUC MUS', teacher:'Kevin',              group:'all' },
+    { subj:'EDUC MUS', teacher:'Kevin',              group:'all' },
+    { subj:'ED PA CO', teacher:'Daniela',            group:'all' },
+    { subj:'ESP',      teacher:'',                   group:'all' },
+    { subj:'ING ESC',  teacher:'Senior',             group:'G1'  },
+    { subj:'ING OR',   teacher:'Victor',             group:'G2'  },
+    { subj:'EDUC FIS', teacher:'Enoc/Carlos/San',   group:'all' },
+    { subj:'EDUC FIS', teacher:'Enoc/Carlos/San',   group:'all' },
+    { subj:'EST SOC',  teacher:'',                   group:'all' },
+    { subj:'EST SOC',  teacher:'',                   group:'all' },
+  ],
+  Ma: [
+    { subj:'MAD Y VAC',teacher:'Aida/Prescila',      group:'all' },
+    { subj:'MAD Y VAC',teacher:'Aida/Prescila',      group:'all' },
+    { subj:'MAD Y VAC',teacher:'Aida/Prescila',      group:'all' },
+    { subj:'MAD Y VAC',teacher:'Aida/Prescila',      group:'all' },
+    { subj:'ING OR',   teacher:'Victor',             group:'G1'  },
+    { subj:'ING ESC',  teacher:'Senior',             group:'G2'  },
+    { subj:'EDUC CIV', teacher:'Aya',                group:'all' },
+    { subj:'EDUC CIV', teacher:'Aya',                group:'all' },
+    { subj:'CIEN',     teacher:'Daniela',            group:'all' },
+    { subj:'CIEN',     teacher:'Daniela',            group:'all' },
+    { subj:'ESP',      teacher:'',                   group:'all' },
+    { subj:'ESP',      teacher:'',                   group:'all' },
+  ],
+  Mi: [
+    { subj:'CIEN',     teacher:'Daniela',            group:'all' },
+    { subj:'CIEN',     teacher:'Daniela',            group:'all' },
+    { subj:'ARTES P',  teacher:'Karen',              group:'all' },
+    { subj:'ARTES P',  teacher:'Karen',              group:'all' },
+    { subj:'ED UC REL',teacher:'',                   group:'all' },
+    { subj:'FRANCÉS',  teacher:'Erick',              group:'all' },
+    { subj:'ING OR',   teacher:'Victor',             group:'G1'  },
+    { subj:'ING ESC',  teacher:'Senior',             group:'G2'  },
+    { subj:'ING LIT',  teacher:'Grey',               group:'all' },
+    { subj:'ING LIT',  teacher:'Grey',               group:'all' },
+    null,
+    { subj:'MATE',     teacher:'',                   group:'all' },
+  ],
+  Ju: [
+    { subj:'ING ESC',  teacher:'Senior',             group:'G1'  },
+    { subj:'ING OR',   teacher:'Victor',             group:'G2'  },
+    { subj:'COMP',     teacher:'Alfonso',            group:'G1'  },
+    { subj:'GESTIÓN',  teacher:'Natalia',            group:'G2'  },
+    { subj:'GESTIÓN',  teacher:'Natalia',            group:'all' },
+    { subj:'COMP',     teacher:'Alfonso',            group:'all' },
+    { subj:'IE',       teacher:'Fabian',             group:'all' },
+    { subj:'IE',       teacher:'Fabian',             group:'all' },
+    { subj:'FOR MA T', teacher:'Karla',              group:'all' },
+    { subj:'FOR MA T', teacher:'Karla',              group:'all' },
+    { subj:'MATE',     teacher:'Diego',              group:'all' },
+    { subj:'MATE',     teacher:'Diego',              group:'all' },
+  ],
+  Vi: [
+    { subj:'ING OR',   teacher:'Victor (G1) / Senior (G2)', group:'G1'  },
+    { subj:'ING ESC',  teacher:'Senior (G1) / Victor (G2)', group:'G2'  },
+    { subj:'MATE',     teacher:'',                   group:'all' },
+    { subj:'MATE',     teacher:'',                   group:'all' },
+    { subj:'EST SOC',  teacher:'',                   group:'all' },
+    { subj:'EST SOC',  teacher:'',                   group:'all' },
+    { subj:'EST SOC',  teacher:'',                   group:'all' },
+    { subj:'EST SOC',  teacher:'',                   group:'all' },
+    { subj:'FRANCÉS',  teacher:'Erick',              group:'all' },
+    { subj:'FRANCÉS',  teacher:'Erick',              group:'all' },
+    { subj:'G',        teacher:'Fabian',             group:'all' },
+    null,
+  ],
+};
+
+const DAYS = ['Lu','Ma','Mi','Ju','Vi'];
+const DAY_FULL = { Lu:'Lunes', Ma:'Martes', Mi:'Miércoles', Ju:'Jueves', Vi:'Viernes' };
+
+// ─── BUILD TABLE ──────────────────────────────────────────────────────────────
+
+function buildHeader() {
+  const tr = document.getElementById('headerRow');
+  // Day col
+  const th0 = document.createElement('th');
+  th0.textContent = 'DÍA';
+  tr.appendChild(th0);
+
+  PERIODS.forEach((per, i) => {
+    // Insert break before this period?
+    const brk = BREAKS.find(b => b.after === per.p - 1);
+    if (brk) {
+      const th = document.createElement('th');
+      th.className = 'break-col';
+      th.textContent = brk.label.toUpperCase();
+      tr.appendChild(th);
+    }
+    const th = document.createElement('th');
+    th.className = 'period-num';
+    th.innerHTML = `${per.p}<br><span style="font-size:0.55rem;opacity:0.5">${per.time}</span>`;
+    tr.appendChild(th);
+  });
+}
+
+function buildBody() {
+  const tbody = document.getElementById('scheduleBody');
+  DAYS.forEach(day => {
+    const tr = document.createElement('tr');
+    tr.dataset.day = day;
+
+    // Day cell
+    const tdDay = document.createElement('td');
+    tdDay.innerHTML = `<div class="day-cell">${day}</div>`;
+    tr.appendChild(tdDay);
+
+    const periods = SCHEDULE[day];
+    periods.forEach((slot, i) => {
+      const per = PERIODS[i];
+      // Insert break col?
+      const brk = BREAKS.find(b => b.after === per.p - 1);
+      if (brk) {
+        const tdB = document.createElement('td');
+        tdB.className = 'break-td';
+        tdB.dataset.break = brk.label;
+        tdB.innerHTML = `<span>${brk.label}</span>`;
+        tr.appendChild(tdB);
+      }
+
+      const td = document.createElement('td');
+      td.dataset.period = per.p;
+      if (slot) {
+        td.dataset.group = slot.group;
+        const s = SUBJECTS[slot.subj] || { color: '#888', teachers: [] };
+        td.innerHTML = `
+          <div class="subject-card"
+               style="background: linear-gradient(135deg, ${s.color}dd, ${s.color}99)"
+               data-subj="${slot.subj}"
+               data-teacher="${slot.teacher}"
+               data-group="${slot.group}"
+               data-period="${per.p}"
+               data-time="${per.time}"
+               data-day="${day}"
+               onmouseenter="showTooltip(event,this)"
+               onmouseleave="hideTooltip()"
+               onclick="highlightSubject('${slot.subj}')">
+            <div class="subj-name">${slot.subj}</div>
+            ${slot.teacher ? `<div class="subj-teacher">${slot.teacher}</div>` : ''}
+            ${slot.group !== 'all' ? `<div class="subj-group">${slot.group}</div>` : ''}
+          </div>`;
+      } else {
+        td.style.background = 'rgba(255,255,255,0.02)';
+      }
+
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+function buildLegend() {
+  const legend = document.getElementById('legend');
+  legend.innerHTML = '<div class="legend-title">Materias</div>';
+  Object.entries(SUBJECTS).forEach(([name, s]) => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${s.color}"></div>${name}`;
+    item.onclick = () => highlightSubject(name);
+    legend.appendChild(item);
+  });
+}
+
+// ─── INTERACTIVITY ───────────────────────────────────────────────────────────
+
+let activeSubject = null;
+let activeDay = 'all';
+let activeGroup = 'all';
+
+function highlightSubject(name) {
+  if (activeSubject === name) {
+    activeSubject = null;
+    document.querySelectorAll('.subject-card').forEach(el => el.classList.remove('highlight'));
+    return;
+  }
+  activeSubject = name;
+  document.querySelectorAll('.subject-card').forEach(el => {
+    if (el.dataset.subj === name) el.classList.add('highlight');
+    else el.classList.remove('highlight');
+  });
+}
+
+function filterDay(day) {
+  activeDay = day;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    if (b.textContent.trim() === 'Todos' && day === 'all') b.classList.add('active');
+    else if (b.textContent.trim() === DAY_FULL[day] || b.textContent.trim() === day) b.classList.add('active');
+    else if (['Lunes','Martes','Miércoles','Jueves','Viernes','Todos'].includes(b.textContent.trim())) b.classList.remove('active');
+  });
+  document.querySelectorAll('#scheduleBody tr').forEach(tr => {
+    if (day === 'all' || tr.dataset.day === day) {
+      tr.style.display = '';
+    } else {
+      tr.style.display = 'none';
+    }
+  });
+}
+
+function filterGroup(g) {
+  activeGroup = g;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    if ((b.textContent.trim() === 'Todos' && g === 'all') ||
+        b.textContent.trim() === g) b.classList.add('active');
+    else if (['Todos','Grupo 1','Grupo 2'].includes(b.textContent.trim())) b.classList.remove('active');
+  });
+  document.querySelectorAll('td[data-group]').forEach(td => {
+    const card = td.querySelector('.subject-card');
+    if (!card) return;
+    const cg = card.dataset.group;
+    if (g === 'all' || cg === 'all' || cg === g) {
+      card.style.opacity = '1';
+      card.style.filter = '';
+    } else {
+      card.style.opacity = '0.2';
+      card.style.filter = 'grayscale(100%)';
+    }
+  });
+}
+
+// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
+
+const tooltip = document.getElementById('tooltip');
+
+function showTooltip(e, el) {
+  const s = SUBJECTS[el.dataset.subj] || {};
+  const groupLabel = el.dataset.group === 'all' ? 'Todos' : el.dataset.group;
+  tooltip.innerHTML = `
+    <div class="tooltip-title" style="color:${(s.color||'#fff')}">${el.dataset.subj}</div>
+    <div class="tooltip-row"><span>Día</span><span>${DAY_FULL[el.dataset.day]}</span></div>
+    <div class="tooltip-row"><span>Período</span><span>${el.dataset.period} · ${el.dataset.time}</span></div>
+    ${el.dataset.teacher ? `<div class="tooltip-row"><span>Docente</span><span>${el.dataset.teacher}</span></div>` : ''}
+    <div class="tooltip-row"><span>Grupo</span><span>${groupLabel}</span></div>
+  `;
+  tooltip.classList.add('show');
+  posTooltip(e);
+}
+
+function posTooltip(e) {
+  const t = tooltip;
+  const x = Math.min(e.clientX + 14, window.innerWidth - t.offsetWidth - 10);
+  const y = Math.min(e.clientY + 14, window.innerHeight - t.offsetHeight - 10);
+  t.style.left = x + 'px';
+  t.style.top  = y + 'px';
+}
+
+document.addEventListener('mousemove', e => {
+  if (tooltip.classList.contains('show')) posTooltip(e);
+});
+
+function hideTooltip() {
+  tooltip.classList.remove('show');
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+
+buildHeader();
+buildBody();
+buildLegend();
+</script>
+</body>
+</html>
