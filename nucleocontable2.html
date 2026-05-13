@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Núcleo Contable | Expertos en PYMES</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange:       #E8621A;
+    --orange-light: #F5813A;
+    --orange-dark:  #C04D0A;
+    --black:        #1A1A1A;
+    --dark:         #2C2C2C;
+    --gray:         #6B6B6B;
+    --light-gray:   #F5F2EE;
+    --white:        #FFFFFF;
+    --cream:        #FDF9F5;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────────── */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index:100;
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--orange);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+    box-shadow: 0 2px 24px rgba(232,98,26,0.10);
+  }
+
+  .logo {
+    display:flex; align-items:center; gap:10px; text-decoration:none;
+  }
+  .logo-icon {
+    width:42px; height:42px; background: var(--orange); border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; flex-shrink:0;
+  }
+  .logo-icon::after {
+    content:''; position:absolute;
+    width:20px; height:20px;
+    border: 3px solid white; border-radius:50%;
+    border-right-color: transparent;
+  }
+  .logo-icon::before {
+    content:''; position:absolute;
+    width:7px; height:7px;
+    background:white; border-radius:50%;
+    left:50%; top:50%; transform:translate(-50%,-50%);
+    z-index:2;
+  }
+  .logo-text { display:flex; flex-direction:column; line-height:1; }
+  .logo-text .n1 { font-family:'DM Sans'; font-weight:700; font-size:1.2rem; color:var(--black); }
+  .logo-text .n2 { font-family:'DM Sans'; font-weight:700; font-size:1.2rem; color:var(--orange); }
+  .logo-text .sub { font-size:0.52rem; letter-spacing:0.18em; color:var(--gray); text-transform:uppercase; margin-top:1px; }
+
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a {
+    text-decoration:none; font-weight:500; font-size:0.9rem;
+    color:var(--dark); transition: color .2s;
+    position:relative; padding-bottom:4px;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:0; left:0;
+    width:0; height:2px; background:var(--orange);
+    transition: width .25s;
+  }
+  .nav-links a:hover { color:var(--orange); }
+  .nav-links a:hover::after { width:100%; }
+
+  .nav-cta {
+    background:var(--orange); color:white !important;
+    padding: 9px 20px; border-radius:6px;
+    font-weight:600 !important;
+    transition: background .2s, transform .15s !important;
+  }
+  .nav-cta::after { display:none !important; }
+  .nav-cta:hover { background:var(--orange-dark) !important; transform:translateY(-1px); }
+
+  /* ─── HERO ────────────────────────────────────────── */
+  #hero {
+    min-height: 100vh;
+    background: var(--cream);
+    display:flex; align-items:center;
+    padding: 100px 5% 60px;
+    position:relative; overflow:hidden;
+  }
+  .hero-bg-shape {
+    position:absolute; right:-80px; top:-60px;
+    width:560px; height:560px;
+    background: radial-gradient(circle, rgba(232,98,26,0.12) 0%, transparent 70%);
+    border-radius:50%;
+    animation: pulse 6s ease-in-out infinite;
+  }
+  .hero-bg-shape2 {
+    position:absolute; left:-100px; bottom:-80px;
+    width:400px; height:400px;
+    background: radial-gradient(circle, rgba(232,98,26,0.08) 0%, transparent 70%);
+    border-radius:50%;
+  }
+  @keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.07);} }
+
+  /* decorative dots */
+  .dots {
+    position:absolute; right:8%; top:30%;
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px; opacity:.35;
+  }
+  .dots span {
+    width:7px; height:7px; background:var(--orange); border-radius:50%; display:block;
+  }
+
+  .hero-content { max-width:620px; position:relative; z-index:2; }
+  .hero-badge {
+    display:inline-block; background:var(--orange);
+    color:white; font-size:0.75rem; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase;
+    padding:6px 16px; border-radius:20px; margin-bottom:24px;
+    animation: fadeUp .6s .1s both;
+  }
+  .hero-title {
+    font-family:'Playfair Display', serif;
+    font-size: clamp(2.4rem,5vw,3.8rem);
+    line-height:1.1; font-weight:900;
+    color:var(--black);
+    animation: fadeUp .6s .2s both;
+  }
+  .hero-title span { color:var(--orange); }
+  .hero-subtitle {
+    margin-top:22px; font-size:1.1rem; line-height:1.7;
+    color:var(--gray); max-width:500px;
+    animation: fadeUp .6s .35s both;
+  }
+  .hero-btns {
+    display:flex; gap:16px; flex-wrap:wrap; margin-top:36px;
+    animation: fadeUp .6s .5s both;
+  }
+  .btn-primary {
+    background:var(--orange); color:white;
+    padding:14px 32px; border-radius:8px;
+    font-weight:700; font-size:1rem; text-decoration:none;
+    transition:background .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(232,98,26,.35);
+  }
+  .btn-primary:hover { background:var(--orange-dark); transform:translateY(-2px); box-shadow: 0 8px 28px rgba(232,98,26,.4); }
+  .btn-secondary {
+    border: 2px solid var(--orange); color:var(--orange);
+    padding:13px 28px; border-radius:8px;
+    font-weight:600; font-size:1rem; text-decoration:none;
+    transition: background .2s, color .2s;
+  }
+  .btn-secondary:hover { background:var(--orange); color:white; }
+
+  .hero-stats {
+    display:flex; gap:40px; margin-top:52px; flex-wrap:wrap;
+    animation: fadeUp .6s .65s both;
+  }
+  .stat { display:flex; flex-direction:column; }
+  .stat-n { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; color:var(--orange); line-height:1; }
+  .stat-l { font-size:.82rem; color:var(--gray); margin-top:4px; font-weight:500; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px);} to{opacity:1;transform:none;} }
+
+  /* ─── SERVICIOS ───────────────────────────────────── */
+  #servicios {
+    padding: 90px 5%;
+    background: var(--white);
+  }
+  .section-label {
+    text-align:center; font-size:.78rem; font-weight:700;
+    letter-spacing:.2em; text-transform:uppercase;
+    color:var(--orange); margin-bottom:12px;
+  }
+  .section-title {
+    text-align:center;
+    font-family:'Playfair Display',serif;
+    font-size: clamp(1.8rem,3.5vw,2.8rem);
+    font-weight:900; color:var(--black); margin-bottom:12px;
+  }
+  .section-title span { color:var(--orange); }
+  .section-sub {
+    text-align:center; color:var(--gray); font-size:1rem;
+    max-width:520px; margin:0 auto 56px;
+    line-height:1.7;
+  }
+
+  .services-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px,1fr));
+    gap:28px; max-width:1100px; margin:0 auto;
+  }
+  .service-card {
+    background: var(--cream);
+    border-radius:16px; padding:36px 30px;
+    border: 2px solid transparent;
+    transition: border .25s, transform .25s, box-shadow .25s;
+    position:relative; overflow:hidden;
+  }
+  .service-card::before {
+    content:''; position:absolute; top:0; left:0; right:0;
+    height:4px; background:var(--orange);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .3s;
+  }
+  .service-card:hover { border-color:var(--orange); transform:translateY(-6px); box-shadow:0 16px 48px rgba(232,98,26,.13); }
+  .service-card:hover::before { transform:scaleX(1); }
+  .service-icon {
+    width:52px; height:52px; background:var(--orange);
+    border-radius:12px; display:flex; align-items:center;
+    justify-content:center; margin-bottom:20px; font-size:1.4rem;
+  }
+  .service-card h3 { font-weight:700; font-size:1.1rem; margin-bottom:10px; }
+  .service-card p { color:var(--gray); font-size:.9rem; line-height:1.65; }
+
+  /* ─── PYMES SECTION ───────────────────────────────── */
+  #pymes {
+    padding:90px 5%;
+    background:var(--light-gray);
+  }
+  .pymes-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:60px; max-width:1100px; margin:0 auto;
+    align-items:center;
+  }
+  .pymes-visual {
+    position:relative;
+  }
+  .pymes-card-main {
+    background:white; border-radius:20px;
+    padding:40px 36px;
+    box-shadow:0 20px 60px rgba(0,0,0,.08);
+    border-left:6px solid var(--orange);
+  }
+  .pymes-card-main h3 {
+    font-family:'Playfair Display',serif;
+    font-size:1.7rem; font-weight:900; margin-bottom:28px;
+    color:var(--black);
+  }
+  .pymes-card-main h3 span { color:var(--orange); }
+  @media(max-width:900px){
+    .pymes-card-main { padding:28px 22px; }
+  }
+  .check-list { list-style:none; display:flex; flex-direction:column; gap:16px; }
+  .check-list li {
+    display:flex; align-items:center; gap:14px;
+    font-size:.97rem; color:var(--dark); line-height:1.5;
+    background: var(--cream); border-radius:10px;
+    padding:14px 18px;
+  }
+  .check-list li::before {
+    content:'✓'; background:var(--orange); color:white;
+    width:26px; height:26px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.75rem; font-weight:900; flex-shrink:0;
+  }
+  .floating-badge {
+    position:absolute; bottom:-20px; right:-20px;
+    background:var(--orange); color:white;
+    border-radius:14px; padding:16px 22px;
+    font-weight:700; font-size:.9rem;
+    box-shadow:0 8px 24px rgba(232,98,26,.4);
+    text-align:center;
+  }
+  .floating-badge .big { font-size:1.8rem; display:block; font-family:'Playfair Display',serif; }
+
+  .pymes-text .section-label { text-align:left; }
+  .pymes-text .section-title { text-align:left; }
+  .pymes-text .section-sub { text-align:left; margin:0 0 32px; }
+
+  .benefits-row { display:flex; flex-direction:column; gap:18px; margin-top:8px; }
+  .benefit-item {
+    display:flex; align-items:center; gap:16px;
+    background:white; border-radius:12px; padding:16px 20px;
+    box-shadow:0 2px 12px rgba(0,0,0,.05);
+  }
+  .benefit-icon {
+    width:44px; height:44px; background:rgba(232,98,26,.12);
+    border-radius:10px; display:flex; align-items:center;
+    justify-content:center; font-size:1.2rem; flex-shrink:0;
+  }
+  .benefit-item h4 { font-weight:700; font-size:.9rem; margin-bottom:3px; }
+  .benefit-item p { color:var(--gray); font-size:.82rem; }
+
+  /* ─── PROCESO ─────────────────────────────────────── */
+  #proceso {
+    padding:90px 5%;
+    background:var(--black);
+    color:white;
+  }
+  #proceso .section-title { color:white; }
+  #proceso .section-sub { color:#aaa; }
+
+  .steps-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:2px; max-width:1000px; margin:0 auto;
+    position:relative;
+  }
+  .step {
+    background:#222; padding:36px 28px; position:relative;
+    transition:background .25s;
+  }
+  .step:hover { background:#2a2a2a; }
+  .step-num {
+    font-family:'Playfair Display',serif;
+    font-size:4rem; font-weight:900; color:var(--orange);
+    opacity:.25; line-height:1; margin-bottom:12px;
+  }
+  .step h3 { font-weight:700; margin-bottom:10px; font-size:1rem; }
+  .step p { color:#999; font-size:.88rem; line-height:1.6; }
+  .step-arrow {
+    position:absolute; right:-12px; top:50%; transform:translateY(-50%);
+    color:var(--orange); font-size:1.4rem; z-index:2;
+  }
+
+  /* ─── TESTIMONIOS ─────────────────────────────────── */
+  #testimonios {
+    padding:90px 5%;
+    background:var(--cream);
+  }
+  .testimonios-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:28px; max-width:1100px; margin:0 auto;
+  }
+  .test-card {
+    background:white; border-radius:16px; padding:32px 28px;
+    box-shadow:0 4px 24px rgba(0,0,0,.06);
+    transition:transform .25s, box-shadow .25s;
+    position:relative;
+  }
+  .test-card:hover { transform:translateY(-5px); box-shadow:0 16px 40px rgba(0,0,0,.1); }
+  .test-stars { color:var(--orange); font-size:1rem; margin-bottom:16px; letter-spacing:2px; }
+  .test-text { color:var(--dark); font-size:.95rem; line-height:1.7; font-style:italic; margin-bottom:24px; }
+  .test-author { display:flex; align-items:center; gap:14px; }
+  .test-avatar {
+    width:46px; height:46px; border-radius:50%;
+    background:var(--orange); color:white;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:1.1rem; flex-shrink:0;
+  }
+  .test-name { font-weight:700; font-size:.9rem; }
+  .test-role { font-size:.8rem; color:var(--gray); }
+  .quote-mark {
+    position:absolute; top:20px; right:24px;
+    font-size:4rem; color:rgba(232,98,26,.1);
+    font-family:'Playfair Display',serif; line-height:1;
+  }
+
+  /* ─── REGÍMENES ───────────────────────────────────── */
+  #regimenes {
+    padding:90px 5%;
+    background:white;
+  }
+  .regimen-grid {
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px; max-width:1000px; margin:0 auto;
+  }
+  .reg-card {
+    border:2px solid var(--light-gray); border-radius:14px;
+    padding:30px 26px; text-align:center;
+    transition:border .25s, transform .25s;
+    cursor:default;
+  }
+  .reg-card:hover { border-color:var(--orange); transform:translateY(-4px); }
+  .reg-icon { font-size:2.5rem; margin-bottom:16px; }
+  .reg-card h3 { font-weight:700; font-size:1rem; margin-bottom:10px; color:var(--black); }
+  .reg-card p { color:var(--gray); font-size:.87rem; line-height:1.6; }
+  .reg-tag {
+    display:inline-block; margin-top:14px;
+    background:rgba(232,98,26,.1); color:var(--orange);
+    font-size:.75rem; font-weight:700; padding:4px 12px; border-radius:20px;
+  }
+
+  /* ─── CONTACTO ────────────────────────────────────── */
+  #contacto {
+    padding:90px 5%;
+    background: linear-gradient(135deg, var(--orange-dark) 0%, var(--orange) 60%, var(--orange-light) 100%);
+    color:white;
+    position:relative; overflow:hidden;
+  }
+  #contacto::before {
+    content:''; position:absolute; top:-80px; right:-80px;
+    width:360px; height:360px;
+    border:80px solid rgba(255,255,255,.08); border-radius:50%;
+  }
+  #contacto::after {
+    content:''; position:absolute; bottom:-100px; left:-60px;
+    width:280px; height:280px;
+    border:60px solid rgba(255,255,255,.06); border-radius:50%;
+  }
+
+  .contacto-inner {
+    max-width:1000px; margin:0 auto;
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:60px; align-items:start; position:relative; z-index:2;
+  }
+  .contacto-info h2 {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2rem,4vw,2.8rem); font-weight:900;
+    margin-bottom:16px; line-height:1.15;
+  }
+  .contacto-info p { font-size:1rem; opacity:.9; margin-bottom:36px; line-height:1.7; }
+
+  .contact-items { display:flex; flex-direction:column; gap:20px; }
+  .contact-item {
+    display:flex; align-items:center; gap:16px;
+  }
+  .contact-item-icon {
+    width:46px; height:46px; background:rgba(255,255,255,.2);
+    border-radius:10px; display:flex; align-items:center;
+    justify-content:center; font-size:1.2rem; flex-shrink:0;
+  }
+  .contact-item-text strong { display:block; font-weight:700; font-size:.95rem; }
+  .contact-item-text span { font-size:.87rem; opacity:.85; }
+
+  .contacto-form {
+    background:white; border-radius:20px;
+    padding:40px 36px;
+  }
+  .contacto-form h3 {
+    color:var(--black); font-weight:700; font-size:1.3rem;
+    margin-bottom:24px;
+  }
+  .form-group { margin-bottom:18px; }
+  .form-group label {
+    display:block; font-size:.85rem; font-weight:600;
+    color:var(--dark); margin-bottom:6px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width:100%; padding:12px 16px;
+    border:2px solid #E8E4E0; border-radius:8px;
+    font-family:'DM Sans',sans-serif; font-size:.9rem;
+    color:var(--black); background:var(--cream);
+    transition:border .2s;
+    outline:none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color:var(--orange); }
+  .form-group textarea { height:100px; resize:vertical; }
+
+  .btn-form {
+    width:100%; padding:14px; background:var(--orange);
+    color:white; border:none; border-radius:8px;
+    font-family:'DM Sans',sans-serif; font-weight:700;
+    font-size:1rem; cursor:pointer;
+    transition:background .2s, transform .15s;
+  }
+  .btn-form:hover { background:var(--orange-dark); transform:translateY(-1px); }
+
+  /* ─── FOOTER ──────────────────────────────────────── */
+  footer {
+    background:var(--black); color:white;
+    padding:50px 5% 28px;
+  }
+  .footer-top {
+    display:grid; grid-template-columns:1.5fr 1fr 1fr;
+    gap:48px; max-width:1100px; margin:0 auto;
+    padding-bottom:40px;
+    border-bottom:1px solid #333;
+  }
+  .footer-brand p { color:#999; font-size:.88rem; line-height:1.7; margin-top:16px; }
+  .footer-col h4 { font-weight:700; font-size:.9rem; letter-spacing:.08em; margin-bottom:18px; color:white; }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .footer-col ul li a { color:#999; font-size:.87rem; text-decoration:none; transition:color .2s; }
+  .footer-col ul li a:hover { color:var(--orange); }
+
+  .footer-bottom {
+    max-width:1100px; margin:24px auto 0;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:12px;
+  }
+  .footer-bottom p { color:#666; font-size:.8rem; }
+  .footer-bottom .socials { display:flex; gap:12px; }
+  .social-btn {
+    width:34px; height:34px; background:#222; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    color:#999; font-size:.85rem; text-decoration:none;
+    transition:background .2s, color .2s;
+  }
+  .social-btn:hover { background:var(--orange); color:white; }
+
+  /* ─── WHATSAPP FLOAT ──────────────────────────────── */
+  .wa-float {
+    position:fixed; bottom:28px; right:28px; z-index:999;
+    background:#25D366; color:white;
+    width:58px; height:58px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem; text-decoration:none;
+    box-shadow:0 6px 28px rgba(37,211,102,.5);
+    animation: waPulse 2.5s infinite;
+  }
+  @keyframes waPulse {
+    0%,100%{box-shadow:0 6px 28px rgba(37,211,102,.5);}
+    50%{box-shadow:0 6px 40px rgba(37,211,102,.8);}
+  }
+
+  /* ─── SEPARADOR DECORATIVO ───────────────────────── */
+  .divider {
+    display:flex; align-items:center; gap:16px;
+    max-width:300px; margin:0 auto 56px;
+  }
+  .divider::before,.divider::after {
+    content:''; flex:1; height:2px; background:var(--orange); opacity:.3;
+  }
+  .divider span { color:var(--orange); font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; white-space:nowrap; }
+
+  /* ─── RESPONSIVE ──────────────────────────────────── */
+  @media(max-width:768px){
+    nav { padding:0 4%; }
+    .nav-links { display:none; }
+    .pymes-grid { grid-template-columns:1fr; gap:36px; }
+    .contacto-inner { grid-template-columns:1fr; gap:36px; }
+    .footer-top { grid-template-columns:1fr; gap:32px; }
+    .floating-badge { display:none; }
+    .hero-stats { gap:24px; }
+    .steps-grid { grid-template-columns:1fr; gap:2px; }
+    .step-arrow { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="logo">
+    <div class="logo-icon"></div>
+    <div class="logo-text">
+      <div><span class="n1">Núcleo</span><span class="n2">Contable</span></div>
+      <span class="sub">Expertos en PYMES</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#pymes">PYMES</a></li>
+    <li><a href="#proceso">Proceso</a></li>
+    <li><a href="#testimonios">Testimonios</a></li>
+    <li><a href="#regimenes">Regímenes</a></li>
+    <li><a href="#contacto" class="nav-cta">Contáctenos</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-shape"></div>
+  <div class="hero-bg-shape2"></div>
+  <div class="dots">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="hero-content">
+    <span class="hero-badge">📊 Expertos en PYMES · Costa Rica</span>
+    <h1 class="hero-title">
+      Tu contabilidad<br>en orden,<br>tu negocio con<br><span>respaldo.</span>
+    </h1>
+    <p class="hero-subtitle">
+      En Núcleo Contable trabajamos contigo de forma <strong>cercana, clara y transparente.</strong>
+      Asesoría tributaria, registro PYME y contabilidad para emprendedores de Ciudad Neily y toda la zona.
+    </p>
+    <div class="hero-btns">
+      <a href="https://wa.me/50689562828" class="btn-primary">💬 Escríbenos por WhatsApp</a>
+      <a href="#servicios" class="btn-secondary">Ver servicios →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-n">PYME</span><span class="stat-l">Registro ante el MEIC</span></div>
+      <div class="stat"><span class="stat-n">REA</span><span class="stat-l">Régimen Agropecuario</span></div>
+      <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Asesoría personalizada</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <p class="section-label">¿Cómo podemos ayudarte?</p>
+  <h2 class="section-title">Nuestros <span>Servicios</span></h2>
+  <p class="section-sub">Todo lo que tu negocio necesita para crecer con orden, claridad y confianza.</p>
+  <div class="divider"><span>✦</span></div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">📋</div>
+      <h3>Contabilidad para PYMES</h3>
+      <p>Llevamos tus registros contables al día. Claridad en tus números, evita errores y sanciones. Toma mejores decisiones.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🏛️</div>
+      <h3>Asesoría Tributaria</h3>
+      <p>Cumplimiento ante el Ministerio de Hacienda, declaraciones de renta e IVA. Hacerlo bien desde el inicio evita rechazos.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <h3>Registro PYME ante MEIC</h3>
+      <p>Te guiamos en el proceso de formalización. Acceso a financiamiento, programas de apoyo y capacitación empresarial.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🌾</div>
+      <h3>Régimen Especial Agropecuario</h3>
+      <p>Asesoría especializada en REA. Asesoría personalizada y acompañamiento en todo el proceso.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💡</div>
+      <h3>Asesoría Financiera</h3>
+      <p>Análisis de tu situación financiera. Te ayudamos a entender tus activos, nivel de ventas y proyecciones de crecimiento.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🛡️</div>
+      <h3>CCSS e INS</h3>
+      <p>Gestión y cumplimiento ante la Caja Costarricense y el INS. Mantenemos tu empresa activa y al día en sus obligaciones.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PYMES -->
+<section id="pymes">
+  <div class="pymes-grid">
+    <div class="pymes-visual">
+      <div class="pymes-card-main">
+        <h3>¿Qué es una <span>PYME</span>?</h3>
+        <ul class="check-list">
+          <li>Pequeña o mediana empresa <strong>formalmente registrada</strong> ante el Estado costarricense.</li>
+          <li>El MEIC la clasifica según <strong>cantidad de empleados, nivel de ventas y activos</strong>.</li>
+          <li>Acceso a <strong>financiamiento</strong> y programas de apoyo gubernamentales.</li>
+          <li>Participación en <strong>compras públicas</strong> y licitaciones del Estado.</li>
+          <li><strong>Capacitación empresarial</strong> gratuita con respaldo institucional.</li>
+        </ul>
+      </div>
+      <div class="floating-badge">
+        <span class="big">+</span>
+        Oportunidades para<br>tu negocio
+      </div>
+    </div>
+    <div class="pymes-text">
+      <p class="section-label">Beneficios de ser PYME</p>
+      <h2 class="section-title">Formalizarse <span>abre puertas</span></h2>
+      <p class="section-sub">Registrarse como PYME ante el MEIC es una herramienta clave para crecer con respaldo.</p>
+      <div class="benefits-row">
+        <div class="benefit-item">
+          <div class="benefit-icon">💰</div>
+          <div>
+            <h4>Acceso a financiamiento</h4>
+            <p>Créditos y fondos especiales disponibles solo para PYMES registradas.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">📚</div>
+          <div>
+            <h4>Capacitación empresarial</h4>
+            <p>Talleres, mentorías y programas de formación para tu equipo.</p>
+          </div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🏆</div>
+          <div>
+            <h4>Compras públicas</h4>
+            <p>Participa en licitaciones y contrataciones del Estado costarricense.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso">
+  <p class="section-label" style="color:var(--orange-light)">Así trabajamos</p>
+  <h2 class="section-title">Nuestro <span>Proceso</span></h2>
+  <p class="section-sub">Simple, claro y sin sorpresas. Te acompañamos en cada paso.</p>
+  <div class="divider"><span>✦</span></div>
+  <div class="steps-grid">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Consulta inicial</h3>
+      <p>Nos contactas por WhatsApp o en nuestra oficina. Evaluamos tu situación sin costo.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Diagnóstico</h3>
+      <p>Revisamos el estado actual de tu empresa: obligaciones, registros y necesidades específicas.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Plan de acción</h3>
+      <p>Diseñamos una estrategia contable y tributaria adaptada a tu negocio y presupuesto.</p>
+      <span class="step-arrow">→</span>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Ejecución y seguimiento</h3>
+      <p>Implementamos el plan, llevamos tu contabilidad y te informamos en todo momento.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <p class="section-label">Lo que dicen nuestros clientes</p>
+  <h2 class="section-title">Casos de <span>Éxito</span></h2>
+  <p class="section-sub">Emprendedores y PYMES que confiaron en Núcleo Contable para ordenar y hacer crecer sus negocios.</p>
+  <div class="divider"><span>✦</span></div>
+  <div class="testimonios-grid">
+    <div class="test-card">
+      <span class="quote-mark">"</span>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Gracias a Núcleo Contable pude registrarme como PYME y acceder a un crédito que me permitió ampliar mi negocio. El proceso fue claro y me acompañaron en cada paso."</p>
+      <div class="test-author">
+        <div class="test-avatar">M</div>
+        <div>
+          <div class="test-name">María González</div>
+          <div class="test-role">Propietaria, Tienda de Ropa – Ciudad Neily</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <span class="quote-mark">"</span>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Tenía años sin llevar una contabilidad ordenada. Me ayudaron a ponerme al día con Hacienda sin multas y ahora entiendo perfectamente las finanzas de mi empresa."</p>
+      <div class="test-author">
+        <div class="test-avatar">C</div>
+        <div>
+          <div class="test-name">Carlos Méndez</div>
+          <div class="test-role">Productor agrícola – Corredores</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card">
+      <span class="quote-mark">"</span>
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"El servicio es muy cercano y transparente. Me explican todo en términos simples, sin tecnicismos. Siento que realmente trabajan para que mi negocio crezca."</p>
+      <div class="test-author">
+        <div class="test-avatar">A</div>
+        <div>
+          <div class="test-name">Ana Ramírez</div>
+          <div class="test-role">Emprendedora, Panadería – Neily</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGÍMENES -->
+<section id="regimenes">
+  <p class="section-label">Especialidades</p>
+  <h2 class="section-title">Regímenes que <span>Manejamos</span></h2>
+  <p class="section-sub">Conocemos a fondo los distintos regímenes tributarios de Costa Rica para asesorarte correctamente.</p>
+  <div class="divider"><span>✦</span></div>
+  <div class="regimen-grid">
+    <div class="reg-card">
+      <div class="reg-icon">🌾</div>
+      <h3>Régimen Especial Agropecuario (REA)</h3>
+      <p>Para productores del sector agropecuario. Asesoría personalizada y acompañamiento completo en el proceso.</p>
+      <span class="reg-tag">Sector Agrícola</span>
+    </div>
+    <div class="reg-card">
+      <div class="reg-icon">📑</div>
+      <h3>Régimen Simplificado</h3>
+      <p>Ideal para pequeños negocios. Cumplimiento sencillo con Hacienda con declaraciones trimestrales.</p>
+      <span class="reg-tag">Pequeños Negocios</span>
+    </div>
+    <div class="reg-card">
+      <div class="reg-icon">🏢</div>
+      <h3>Régimen Tradicional</h3>
+      <p>Para empresas con mayor volumen de operaciones. Contabilidad completa, IVA y renta anual.</p>
+      <span class="reg-tag">Empresas Medianas</span>
+    </div>
+    <div class="reg-card">
+      <div class="reg-icon">🆕</div>
+      <h3>Registro de Nuevas Empresas</h3>
+      <p>Te guiamos desde cero: inscripción ante Hacienda, CCSS, INS y registro PYME ante el MEIC.</p>
+      <span class="reg-tag">Emprendedores</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contacto-inner">
+    <div class="contacto-info">
+      <h2>¿Listo para ordenar tu negocio?</h2>
+      <p>Escríbenos hoy. En Núcleo Contable trabajamos contigo de forma cercana, clara y transparente. Un negocio ordenado no solo cumple, también crece con más tranquilidad.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-item-icon">📱</div>
+          <div class="contact-item-text">
+            <strong>WhatsApp</strong>
+            <span>8956-2828</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">✉️</div>
+          <div class="contact-item-text">
+            <strong>Correo</strong>
+            <span>nucleocontablecr@gmail.com</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <strong>Ubicación</strong>
+            <span>Frente a Tribunales de Justicia, Ciudad Neily</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🕐</div>
+          <div class="contact-item-text">
+            <strong>Horario</strong>
+            <span>Lun–Vie: 8:00 am – 4:00 pm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contacto-form">
+      <h3>Solicitar información</h3>
+      <div class="form-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Tu nombre">
+      </div>
+      <div class="form-group">
+        <label>Teléfono / WhatsApp</label>
+        <input type="tel" placeholder="8888-8888">
+      </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="correo@ejemplo.com">
+      </div>
+      <div class="form-group">
+        <label>¿En qué podemos ayudarte?</label>
+        <select>
+          <option>Contabilidad para mi negocio</option>
+          <option>Registro PYME ante el MEIC</option>
+          <option>Asesoría tributaria</option>
+          <option>Régimen Especial Agropecuario</option>
+          <option>Inscripción nueva empresa</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensaje (opcional)</label>
+        <textarea placeholder="Cuéntanos sobre tu negocio…"></textarea>
+      </div>
+      <button class="btn-form" onclick="alert('¡Gracias! Nos comunicaremos contigo pronto.')">Enviar mensaje →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#hero" class="logo">
+        <div class="logo-icon"></div>
+        <div class="logo-text">
+          <div><span class="n1">Núcleo</span><span class="n2">Contable</span></div>
+          <span class="sub">Expertos en PYMES</span>
+        </div>
+      </a>
+      <p style="margin-top:18px;">Servicios contables especializados para emprendedores y pequeñas empresas de Costa Rica. Orden y confianza para tu negocio.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="#servicios">Contabilidad PYMES</a></li>
+        <li><a href="#servicios">Asesoría Tributaria</a></li>
+        <li><a href="#servicios">Registro PYME-MEIC</a></li>
+        <li><a href="#regimenes">Régimen Agropecuario</a></li>
+        <li><a href="#servicios">CCSS e INS</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="https://wa.me/50689562828">WhatsApp: 8956-2828</a></li>
+        <li><a href="mailto:nucleocontablecr@gmail.com">nucleocontablecr@gmail.com</a></li>
+        <li><a href="#">Ciudad Neily, Corredores</a></li>
+        <li><a href="https://instagram.com/nucleocontable_cr">@nucleocontable_cr</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Núcleo Contable. Todos los derechos reservados. Ciudad Neily, Costa Rica.</p>
+    <div class="socials">
+      <a href="https://instagram.com/nucleocontable_cr" class="social-btn" title="Instagram">📷</a>
+      <a href="https://wa.me/50689562828" class="social-btn" title="WhatsApp">💬</a>
+      <a href="mailto:nucleocontablecr@gmail.com" class="social-btn" title="Email">✉️</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a href="https://wa.me/50689562828" class="wa-float" title="Escríbenos por WhatsApp" target="_blank">💬</a>
+
+</body>
+</html>
